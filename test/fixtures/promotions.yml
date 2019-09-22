@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  promotion_name: MyString
+  amount: MyString
+  decription: MyString
+  images: one
+  date_start: 2019-09-22 14:45:30
+  date_close: 2019-09-22 14:45:30
+
+two:
+  promotion_name: MyString
+  amount: MyString
+  decription: MyString
+  images: two
+  date_start: 2019-09-22 14:45:30
+  date_close: 2019-09-22 14:45:30

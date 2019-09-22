@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_22_072743) do
+ActiveRecord::Schema.define(version: 2019_09_22_075246) do
 
   create_table "brands", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "brand_name"
@@ -35,6 +35,27 @@ ActiveRecord::Schema.define(version: 2019_09_22_072743) do
   create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "order_details", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "orders_id", null: false
+    t.bigint "product_details_id", null: false
+    t.bigint "promotions_products_id", null: false
+    t.string "price"
+    t.integer "quantity"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["orders_id"], name: "index_order_details_on_orders_id"
+    t.index ["product_details_id"], name: "index_order_details_on_product_details_id"
+    t.index ["promotions_products_id"], name: "index_order_details_on_promotions_products_id"
+  end
+
+  create_table "orders", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "customer_name"
+    t.string "customer_address"
+    t.string "telephone"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -66,6 +87,27 @@ ActiveRecord::Schema.define(version: 2019_09_22_072743) do
     t.index ["images_id"], name: "index_products_on_images_id"
   end
 
+  create_table "promotions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "promotion_name"
+    t.string "amount"
+    t.string "decription"
+    t.bigint "images_id", null: false
+    t.datetime "date_start"
+    t.datetime "date_close"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["images_id"], name: "index_promotions_on_images_id"
+  end
+
+  create_table "promotions_products", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "promotions_id", null: false
+    t.bigint "products_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["products_id"], name: "index_promotions_products_on_products_id"
+    t.index ["promotions_id"], name: "index_promotions_products_on_promotions_id"
+  end
+
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "roleName"
     t.datetime "created_at", precision: 6, null: false
@@ -89,11 +131,17 @@ ActiveRecord::Schema.define(version: 2019_09_22_072743) do
     t.index ["roles_id"], name: "index_users_on_roles_id"
   end
 
+  add_foreign_key "order_details", "orders", column: "orders_id"
+  add_foreign_key "order_details", "product_details", column: "product_details_id"
+  add_foreign_key "order_details", "promotions_products", column: "promotions_products_id"
   add_foreign_key "product_details", "colors", column: "colors_id"
   add_foreign_key "product_details", "products", column: "products_id"
   add_foreign_key "product_details", "sizes"
   add_foreign_key "products", "brands", column: "brands_id"
   add_foreign_key "products", "categories", column: "categories_id"
   add_foreign_key "products", "images", column: "images_id"
+  add_foreign_key "promotions", "images", column: "images_id"
+  add_foreign_key "promotions_products", "products", column: "products_id"
+  add_foreign_key "promotions_products", "promotions", column: "promotions_id"
   add_foreign_key "users", "roles", column: "roles_id"
 end

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  products: one
+  colors: one
+  size: one
+  quantity: 1
+  import_date: MyString
+
+two:
+  products: two
+  colors: two
+  size: two
+  quantity: 1
+  import_date: MyString
